@@ -11,4 +11,50 @@
 // "white" in every pixel;
 // the screen should remain fully clear as long as no key is pressed.
 
-// Put your code here.
+
+(RESET)
+	// USE R1 TO STORE CURRENT
+	// REGISTER ADDRESS OF PIXEL
+
+	@SCREEN
+	D=A
+	@R1
+	M=D	
+
+(LOOP)
+	// SET D TO -1 (BLACK)
+	// IF KEY IS PRESSED
+
+	@KBD
+	D=M
+	@WHT
+	D;JEQ
+	D=-1
+	(WHT)	
+
+	// UPDATE CURRENT PIXEL
+	// REGISTER BASED ON KEY INPUT
+
+	@R1
+	A=M
+	M=D
+
+	// RESET IF PIXEL REGISTER HAS
+	// REACHED BOTTOM OF SCREEN
+
+	@24575
+	D=A
+	@R1
+	D=D-M
+	@RESET
+	D;JEQ
+	
+
+	// INCREASE PIXEL POSITION
+	// TO NEXT REGISTER
+
+	@R1
+	M=M+1	
+
+	@LOOP
+	0;JMP
