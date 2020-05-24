@@ -61,19 +61,18 @@ CHIP CPU {
 		out[15]=i
 	);
 
-
 	Mux16(
 		a=instruction,
 		b=aluout,
 		sel=i,
-		out=muxout1
+		out=aluval
 	);
 
 	// A REGISTER
 	Not(in=i, out=noti);
 	Or(a=d1, b=noti, out=loada);
 	ARegister(
-		in=muxout1,
+		in=aluval,
 		load=loada,
 		out=aout,
 		out[0..14]=addressM
@@ -92,7 +91,6 @@ CHIP CPU {
 		out=dout
 	);
 
-	// ALU
 	ALU(
 		x=dout,
 		y=yout,
@@ -104,19 +102,18 @@ CHIP CPU {
 		no=c6,
 		out=aluout,
 		out=outM,
-		zr=zrout,
-		ng=ngout
+		zr=zr,
+		ng=ng
 	);
 
-	// PC
-	And(a=zrout, b=j2, out=j2out);
-	And(a=ngout, b=j1, out=j1out);
-	Or(a=j1out, b=j2out, out=j1j2out);
-	Not(in=zrout, out=notzrout);
-	Not(in=ngout, out=notngout);
-	And(a=notzrout, b=notngout, out=notngzrout);
-	And(a=notngzrout, b=j3, out=j3out);	
-	Or(a=j1j2out, b=j3out, out=jmp);
+	// JUMP
+	And(a=ng, b=j1, out=jmpng);
+	And(a=zr, b=j2, out=jmpzr);
+	Or(a=ng, b=zr, out=aluneg);
+	Not(in=aluneg, out=alupos);
+	And(a=alupos, b=j3, out=jmppos);
+	Or(a=jmppos, b=jmpng, out=jmpcond1);
+	Or(a=jmpzr, b=jmpcond1, out=jmp);
 
 	PC(
 		in=aout,
