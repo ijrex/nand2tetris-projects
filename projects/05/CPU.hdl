@@ -39,5 +39,90 @@ CHIP CPU {
         pc[15];          // address of next instruction
 
     PARTS:
-    // Put your code here:
+
+	// CONTROLLER
+	Mux16(
+		a=false,
+		b=instruction,
+		sel=instruction[15],
+		out[0]=j3,
+		out[1]=j2,
+		out[2]=j1,
+		out[3]=writeM,
+		out[4]=d2,
+		out[5]=d1,
+		out[6]=c6,
+		out[7]=c5,
+		out[8]=c4,
+		out[9]=c3,
+		out[10]=c2,
+		out[11]=c1,
+		out[12]=a,
+		out[15]=i
+	);
+
+
+	Mux16(
+		a=instruction,
+		b=aluout,
+		sel=i,
+		out=muxout1
+	);
+
+	// A REGISTER
+	Not(in=i, out=noti);
+	Or(a=d1, b=noti, out=loada);
+	ARegister(
+		in=muxout1,
+		load=loada,
+		out=aout,
+		out[0..14]=addressM
+	);
+
+	Mux16(
+		a=aout,
+		b=inM,
+		sel=a,
+		out=yout
+	);	
+
+	DRegister(
+		in=aluout, 
+		load=d2,
+		out=dout
+	);
+
+	// ALU
+	ALU(
+		x=dout,
+		y=yout,
+		zx=c1,
+		nx=c2,
+		zy=c3,
+		ny=c4,
+		f=c5,
+		no=c6,
+		out=aluout,
+		out=outM,
+		zr=zrout,
+		ng=ngout
+	);
+
+	// PC
+	And(a=zrout, b=j2, out=j2out);
+	And(a=ngout, b=j1, out=j1out);
+	Or(a=j1out, b=j2out, out=j1j2out);
+	Not(in=zrout, out=notzrout);
+	Not(in=ngout, out=notngout);
+	And(a=notzrout, b=notngout, out=notngzrout);
+	And(a=notngzrout, b=j3, out=j3out);	
+	Or(a=j1j2out, b=j3out, out=jmp);
+
+	PC(
+		in=aout,
+		load=jmp,
+		inc=true,
+		reset=reset,
+		out[0..14]=pc
+	);	
 }
