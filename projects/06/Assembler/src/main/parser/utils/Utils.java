@@ -15,8 +15,18 @@ public class Utils {
 
   public static Boolean isACommand(String str) {
     if (str.length() > 0) {
-      char prefix = str.charAt(0);
-      if (prefix == '@') {
+      String regex = "@\\d+$";
+      if (str.matches(regex)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public static Boolean isSymbol(String str) {
+    if (str.length() > 0) {
+      String regex = "@[^\\d][\\w_.$:]+";
+      if (str.matches(regex)) {
         return true;
       }
     }
@@ -31,6 +41,17 @@ public class Utils {
       if (equals >= 0 ^ colon >= 0) {
         return true;
       }
+    }
+    return false;
+  }
+
+  public static Boolean isPsuedoCommand(String str) {
+    if (str.length() > 0) {
+      boolean brackets = str.matches("\\([^\\d][\\w_.$:]+\\)");
+      if (brackets) {
+        return true;
+      }
+      ;
     }
     return false;
   }

@@ -14,12 +14,18 @@ public class Parser {
 	}
 
 	public enum CommandType {
-		A_COMMAND, C_COMMAND, IGNORE_COMMAND, INVALID_COMMAND
+		A_COMMAND, C_COMMAND, SYMBOL, PSUEDO_COMMAND, IGNORE_COMMAND, INVALID_COMMAND
 	}
 
 	public Parser.CommandType isType(String str) {
 		if (Utils.isACommand(str)) {
 			return Parser.CommandType.A_COMMAND;
+		}
+		if (Utils.isPsuedoCommand(str)) {
+			return Parser.CommandType.PSUEDO_COMMAND;
+		}
+		if (Utils.isSymbol(str)) {
+			return Parser.CommandType.SYMBOL;
 		}
 		if (Utils.isIgnoreCommand(str)) {
 			return Parser.CommandType.IGNORE_COMMAND;
