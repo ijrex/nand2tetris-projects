@@ -1,6 +1,6 @@
 package instruction;
 
-import instruction.utils.*;
+import instruction.util.c.*;
 
 public class CInstruction implements Instruction {
 

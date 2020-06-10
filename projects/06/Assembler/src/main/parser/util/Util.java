@@ -1,6 +1,6 @@
-package parser.utils;
+package parser.util;
 
-public class Utils {
+public class Util {
 
   public static String trimData(String str) {
     if (str.length() > 0) {

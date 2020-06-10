@@ -12,10 +12,11 @@ class Assembler {
 
 	public static void main(String[] args) {
 
+		SymbolTable symbols = new SymbolTable();
+
 		try {
 			File readFile = new File("example.asm");
 			Scanner fileScanner = new Scanner(readFile);
-			SymbolTable symbols = new SymbolTable();
 			int counter = 0;
 
 			while (fileScanner.hasNextLine()) {
@@ -27,21 +28,25 @@ class Assembler {
 
 				switch (type) {
 					case A_COMMAND:
-						counter++;
+						counter = counter + 1;
 						break;
 					case C_COMMAND:
-						counter++;
+						counter = counter + 1;
+						break;
+					case SYMBOL:
+						counter = counter + 1;
 						break;
 					case PSUEDO_COMMAND:
-						symbols.put(input.trimmed, counter + 1);
+						symbols.put(input.trimmed, counter);
 						break;
+
 					case INVALID_COMMAND:
 						throw new IllegalArgumentException("\"" + input + "\" is not a valid command");
 					default:
 						break;
 				}
-
 			}
+
 			fileScanner.close();
 		} catch (FileNotFoundException e) {
 			System.out.println("An error occured.");
@@ -61,30 +66,30 @@ class Assembler {
 
 				switch (type) {
 					case A_COMMAND:
-						AInstruction A = new AInstruction(input.trimmed);
-						fileWriter.write(A.toBinary() + "\n");
+						AInstruction a = new AInstruction(input.trimmed);
+						fileWriter.write(a.toBinary() + "\n");
 						break;
 					case C_COMMAND:
-						CInstruction C = new CInstruction(input.trimmed);
-						fileWriter.write(C.toBinary() + "\n");
+						CInstruction c = new CInstruction(input.trimmed);
+						fileWriter.write(c.toBinary() + "\n");
 						break;
 					case SYMBOL:
-						// TODO:
-						// -> CHECK IF SYMBOL EXISTS
-						// -> IF IT DOES, GET MEMORY LOCATION FROM SYMBOLS TABLE
-						// -> IF IT DOESN'T, CREATE SYMBOLE
-						// CREATE A_COMMAND FROM VALUE AND PARSE BINARY
-						System.out.println("L_COMMAND: " + input.trimmed);
+						int symbolVal = symbols.handleVar(input.trimmed);
+						AInstruction val = new AInstruction(symbolVal);
+						fileWriter.write(val.toBinary() + "\n");
 						break;
 					case INVALID_COMMAND:
 						throw new IllegalArgumentException("\"" + input + "\" is not a valid command");
 					default:
 						break;
 				}
+
 			}
 			fileScanner.close();
 			fileWriter.close();
-		} catch (FileNotFoundException e) {
+		} catch (
+
+		FileNotFoundException e) {
 			System.out.println("An error occured.");
 			e.printStackTrace();
 		} catch (IOException e) {

@@ -1,6 +1,6 @@
 package parser;
 
-import parser.utils.*;
+import parser.util.*;
 
 public class Parser {
 
@@ -9,7 +9,7 @@ public class Parser {
 
 	public Parser(String line) {
 		raw = line;
-		trimmed = Utils.trimData(raw);
+		trimmed = Util.trimData(raw);
 		commandType = isType(trimmed);
 	}
 
@@ -18,19 +18,19 @@ public class Parser {
 	}
 
 	public Parser.CommandType isType(String str) {
-		if (Utils.isACommand(str)) {
+		if (Util.isACommand(str)) {
 			return Parser.CommandType.A_COMMAND;
 		}
-		if (Utils.isPsuedoCommand(str)) {
+		if (Util.isPsuedoCommand(str)) {
 			return Parser.CommandType.PSUEDO_COMMAND;
 		}
-		if (Utils.isSymbol(str)) {
+		if (Util.isSymbol(str)) {
 			return Parser.CommandType.SYMBOL;
 		}
-		if (Utils.isIgnoreCommand(str)) {
+		if (Util.isIgnoreCommand(str)) {
 			return Parser.CommandType.IGNORE_COMMAND;
 		}
-		if (Utils.isCCommand(str)) {
+		if (Util.isCCommand(str)) {
 			return Parser.CommandType.C_COMMAND;
 		}
 
