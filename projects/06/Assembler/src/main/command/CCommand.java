@@ -1,30 +1,30 @@
-package instruction;
+package command;
 
-import instruction.util.c.*;
+import command.util.c.*;
 
-public class CInstruction implements Instruction {
+public class CCommand implements Command {
 
-  public String instruction;
+  public String command;
 
-  public CInstruction(String input) {
-    instruction = input;
+  public CCommand(String input) {
+    command = input;
   }
 
   public String[] decode() {
     String dest, comp, jump;
     dest = comp = jump = null;
 
-    int equalPos = instruction.indexOf('=');
-    int colonPos = instruction.indexOf(';');
+    int equalPos = command.indexOf('=');
+    int colonPos = command.indexOf(';');
 
     if (equalPos >= 0) {
-      dest = instruction.substring(0, equalPos);
-      comp = instruction.substring(equalPos + 1, instruction.length());
+      dest = command.substring(0, equalPos);
+      comp = command.substring(equalPos + 1, command.length());
     }
 
     if (colonPos >= 0) {
-      jump = instruction.substring(colonPos + 1, instruction.length());
-      comp = instruction.substring(0, colonPos);
+      jump = command.substring(colonPos + 1, command.length());
+      comp = command.substring(0, colonPos);
     }
 
     String[] command = { dest, comp, jump };

@@ -1,4 +1,4 @@
-package instruction.util.c;
+package command.util.c;
 
 public class Jump {
 
@@ -34,7 +34,7 @@ public class Jump {
         jump = "000";
         break;
       default:
-        throw new IllegalArgumentException("\"" + input + "\" is not a valid dest command");
+        throw new IllegalArgumentException("\"" + input + "\" is not a valid jump command");
     }
 
     return jump;

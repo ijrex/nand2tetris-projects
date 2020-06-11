@@ -9,7 +9,7 @@ public class Parser {
 
 	public Parser(String line) {
 		raw = line;
-		trimmed = Util.trimData(raw);
+		trimmed = Util.trimExcess(raw);
 		commandType = isType(trimmed);
 	}
 

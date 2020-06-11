@@ -1,4 +1,4 @@
-package instruction.util.c;
+package command.util.c;
 
 public class Comp {
 

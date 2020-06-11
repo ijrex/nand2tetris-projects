@@ -2,7 +2,7 @@ package parser.util;
 
 public class Util {
 
-  public static String trimData(String str) {
+  public static String trimExcess(String str) {
     if (str.length() > 0) {
       int comment = str.indexOf("//");
       if (comment >= 0) {
@@ -25,7 +25,7 @@ public class Util {
 
   public static Boolean isSymbol(String str) {
     if (str.length() > 0) {
-      String regex = "@[^\\d][\\w_.$:]+";
+      String regex = "@[^\\d-][\\w_.$:]+";
       if (str.matches(regex)) {
         return true;
       }

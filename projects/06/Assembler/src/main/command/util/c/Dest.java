@@ -1,4 +1,4 @@
-package instruction.util.c;
+package command.util.c;
 
 public class Dest {
 
@@ -25,11 +25,6 @@ public class Dest {
 
     if (input == null) {
       return "000";
-    }
-
-    Boolean isIllegal = illegalDestCommand(input);
-    if (isIllegal) {
-      throw new IllegalArgumentException("\"" + input + "\" is not a valid dest command");
     }
 
     char A, D, M;
