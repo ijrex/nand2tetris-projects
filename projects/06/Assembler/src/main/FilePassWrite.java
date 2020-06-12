@@ -9,10 +9,10 @@ import command.*;
 import symbol_table.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import util.*;
 
 class FilePassWrite {
 
@@ -21,7 +21,7 @@ class FilePassWrite {
     int lineNumber = 1;
     try {
       Scanner fileScanner = new Scanner(readFile);
-      FileWriter fileWriter = new FileWriter("example.hack", false);
+      FileWriter fileWriter = new FileWriter(Util.getPrunedName(readFile) + ".hack", false);
 
       while (fileScanner.hasNextLine()) {
         String line = fileScanner.nextLine();
@@ -56,13 +56,9 @@ class FilePassWrite {
       System.out.println("ERROR ON LINE " + lineNumber);
       e.printStackTrace();
       System.exit(1);
-    } catch (FileNotFoundException e) {
-      System.out.println("An error occured.");
-      e.printStackTrace();
     } catch (IOException e) {
       System.out.println("An error occured.");
       e.printStackTrace();
     }
   }
-
 }
