@@ -21,7 +21,9 @@ class FilePassWrite {
     int lineNumber = 1;
     try {
       Scanner fileScanner = new Scanner(readFile);
-      FileWriter fileWriter = new FileWriter(Util.getPrunedName(readFile) + ".hack", false);
+
+      String outputFile = Util.outputFilePath(readFile);
+      FileWriter fileWriter = new FileWriter(outputFile, false);
 
       while (fileScanner.hasNextLine()) {
         String line = fileScanner.nextLine();
@@ -52,12 +54,17 @@ class FilePassWrite {
       }
       fileScanner.close();
       fileWriter.close();
+
+      System.out.println("SUCCESS: Hack file written to: ");
+      System.out.println(outputFile);
+
     } catch (IllegalArgumentException e) {
       System.out.println("ERROR ON LINE " + lineNumber);
       e.printStackTrace();
       System.exit(1);
     } catch (IOException e) {
       System.out.println("An error occured.");
+      System.exit(1);
       e.printStackTrace();
     }
   }

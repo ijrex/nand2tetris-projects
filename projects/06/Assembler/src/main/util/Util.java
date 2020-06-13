@@ -3,8 +3,14 @@ package util;
 import java.io.File;
 
 public class Util {
-  public static String getPrunedName(File file) {
-    String fileName = file.getName();
+  private static String getPrunedPath(File file) {
+    String fileName = file.getAbsolutePath();
     return fileName.substring(0, fileName.lastIndexOf("."));
+  }
+
+  public static String outputFilePath(File file) {
+    String filePath = getPrunedPath(file);
+
+    return filePath + ".hack";
   }
 }
