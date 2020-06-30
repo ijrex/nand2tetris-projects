@@ -1,28 +1,37 @@
 package parser;
 
+import java.util.Arrays;
+import commandtype.*;
+
 import parser.util.*;
 
 public class Parser {
 
-	public String raw, trimmed;
-	public CommandType commandType;
+	private String[] args;
 
-	public Parser(String line) {
-		raw = line;
-		trimmed = Util.trimExcess(raw);
-		commandType = isType(trimmed);
+	public Parser(String input) {
+		args = Util.splitArgs(input);
 	}
 
-	public enum CommandType {
-		C_ARITHMETIC, C_PUSH, C_POP, C_LABEL, C_GOTO, C_IF, C_FUNCTION, C_RETURN, C_CALL, IGNORE_COMMAND, INVALID_COMMAND
-	}
-
-	public Parser.CommandType isType(String str) {
-		// TODO: RETURN CORRECT COMMAND TYPE
-		// TODO: RETURN COMMAND ARGS
-		if (Util.isIgnoreCommand(str)) {
-			return Parser.CommandType.IGNORE_COMMAND;
+	public String[] getArgs() {
+		if (args != null) {
+			return Arrays.copyOfRange(args, 1, args.length);
 		}
-		return Parser.CommandType.INVALID_COMMAND;
+		return null;
+	}
+
+	public CommandType getType() {
+		if (args == null) {
+			return CommandType.IGNORE_COMMAND;
+		}
+
+		switch (args[0]) {
+			case "push":
+				return CommandType.C_PUSH;
+			case "add":
+				return CommandType.C_ARITHMETIC;
+		}
+
+		return CommandType.INVALID_COMMAND;
 	}
 }

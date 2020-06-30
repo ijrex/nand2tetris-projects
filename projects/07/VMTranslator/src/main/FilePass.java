@@ -11,36 +11,46 @@ import java.util.Scanner;
 import util.*;
 
 import parser.*;
+import codewriter.*;
+import commandtype.CommandType;
 
 class FilePass {
 
   static void main(File readFile) {
 
     int lineNumber = 1;
+
     try {
       Scanner fileScanner = new Scanner(readFile);
 
       String outputFile = Util.outputFilePath(readFile);
       FileWriter fileWriter = new FileWriter(outputFile, false);
 
+      CodeWriter codeWriter = new CodeWriter();
+
       while (fileScanner.hasNextLine()) {
         String line = fileScanner.nextLine();
 
-        Parser input = new Parser(line);
-        Parser.CommandType type = input.commandType;
-        String command = input.trimmed;
+        Parser command = new Parser(line);
+
+        CommandType type = command.getType();
 
         switch (type) {
-          // TODO: HANDLE COMMAND ACTIONS
-          case IGNORE_COMMAND:
+          case C_PUSH:
+            codeWriter.writePushPop(command.getArgs());
             break;
+          case C_ARITHMETIC:
+            codeWriter.writeArtithmetic(command.getArgs());
+            break;
+
           default:
-            fileWriter.write("TODO: parse \"" + command + "\"\n");
             break;
+
         }
 
         lineNumber++;
       }
+
       fileScanner.close();
       fileWriter.close();
 
